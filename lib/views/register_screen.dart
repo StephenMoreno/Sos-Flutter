@@ -1,91 +1,73 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/routes.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Register extends StatefulWidget{
-  @override _RegisterViewState createState() => _RegisterViewState();
+class Register extends StatefulWidget {
+  @override
+  _RegisterViewState createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends State<Register>{
+class _RegisterViewState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _usernameController;
   TextEditingController _emailController;
   TextEditingController _passwordController;
-  TextEditingController _repasswordController;
+
+  String _email, _password;
   bool isSubmitting = false;
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
     final logo = Image.asset(
       "assets/logo.png",
       height: mq.size.height / 2,
-      width: mq.size.width/3,
+      width: mq.size.width / 3,
     );
 
     final usernameField = TextFormField(
       controller: _usernameController,
-      style: TextStyle(
-          color: Colors.blueAccent
-      ),
+      style: TextStyle(color: Colors.blueAccent),
       decoration: InputDecoration(
         hintText: "Jhon Doe",
         labelText: "username",
-        hintStyle: TextStyle(
-            color: Colors.blueAccent
-        ),
+        hintStyle: TextStyle(color: Colors.blueAccent),
       ),
     );
 
     final emailField = TextFormField(
-
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(
-          color: Colors.blueAccent
-      ),
-      decoration: InputDecoration(
-        hintText: "something@example.com",
-        labelText: "Email",
-        hintStyle: TextStyle(
-            color: Colors.blueAccent
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        style: TextStyle(color: Colors.blueAccent),
+        decoration: InputDecoration(
+          hintText: "something@example.com",
+          labelText: "Email",
+          hintStyle: TextStyle(color: Colors.blueAccent),
         ),
-      ),
-    );
+        onChanged: (value) {
+          setState(() {
+            _email = value.trim();
+          });
+        });
 
     final passwordField = TextFormField(
       controller: _passwordController,
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(
-          color: Colors.blueAccent
-      ),
+      style: TextStyle(color: Colors.blueAccent),
       decoration: InputDecoration(
         hintText: "password",
         labelText: "password",
-        hintStyle: TextStyle(
-            color: Colors.white
-        ),
+        hintStyle: TextStyle(color: Colors.white),
       ),
-
-    );
-
-    final repasswordField = TextFormField(
-      controller: _repasswordController,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(
-          color: Colors.blueAccent
-      ),
-      decoration: InputDecoration(
-        hintText: "repassword",
-        labelText: "repassword",
-        hintStyle: TextStyle(
-            color: Colors.white
-        ),
-      ),
-
+      onChanged: (value) {
+        setState(() {
+          _password = value.trim();
+        });
+      },
     );
 
     final fields = Padding(
@@ -96,11 +78,10 @@ class _RegisterViewState extends State<Register>{
           usernameField,
           emailField,
           passwordField,
-          repasswordField
         ],
       ),
     );
-    final loginButton = Material(
+    final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(25.0),
       color: Colors.white,
@@ -116,20 +97,36 @@ class _RegisterViewState extends State<Register>{
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: () {
-
-          }
-        // TODO: AlertDialog with error
-
-
-      ),
+          onPressed: () async {
+            try {
+              UserCredential userCredential = await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: _email.toString(), password: _password.toString());
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print('The password provided is too weak.');
+              } else if (e.code == 'email-already-in-use') {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                        titlePadding: EdgeInsets.fromLTRB(24, 24, 24, 24),
+                        title:
+                            Text('The account already exists for that email.'),
+                        titleTextStyle:
+                            TextStyle(color: Colors.blueAccent, fontSize: 20.0),
+                      );
+                    });
+              }
+            }
+          }),
     );
 
     final bottom = Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        loginButton,
+        registerButton,
         Padding(
           padding: EdgeInsets.all(8.0),
         ),
@@ -138,39 +135,42 @@ class _RegisterViewState extends State<Register>{
           children: <Widget>[
             Text(
               "Already have an account?",
-              style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.blueAccent),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: Colors.blueAccent),
             ),
             MaterialButton(
-              onPressed:(){ Navigator.of(context).pushNamed(AppRoutes.authLogin);},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.authLogin);
+              },
               child: Text(
                 "Login",
                 style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  color: Colors.blueAccent,
-                  decoration: TextDecoration.underline,
-                ),
+                      color: Colors.blueAccent,
+                      decoration: TextDecoration.underline,
+                    ),
               ),
             ),
           ],
         )
-
       ],
     );
     return Scaffold(
       body: Form(
           key: _formKey,
-          child:SingleChildScrollView(
+          child: SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(36, 0, 36, 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 logo,
                 fields,
+                Padding(padding: EdgeInsets.only(top: 20)),
                 bottom
               ],
             ),
-          )
-
-      ),
+          )),
     );
-}
+  }
 }
