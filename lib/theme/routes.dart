@@ -11,7 +11,7 @@ class AppRoutes{
   static Map<String ,WidgetBuilder> define(){
     return{
       authLogin:(context) => Login(),
-      //authRegister:(context) => Register(),
+      authRegister:(context) => Register(),
     };
   }
 }
