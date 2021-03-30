@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/theme/routes.dart';
 
 class OpeningView extends StatelessWidget {
   @override
@@ -28,7 +29,7 @@ class OpeningView extends StatelessWidget {
               fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          print("Login Pressed");
+          Navigator.of(context).pushNamed(AppRoutes.authLogin);
         },
       ),
     );
@@ -50,7 +51,7 @@ class OpeningView extends StatelessWidget {
               fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          print("Register Pressed");
+          Navigator.of(context).pushNamed(AppRoutes.authRegister);
         },
       ),
     );

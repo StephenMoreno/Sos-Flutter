@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/opening_screen.dart';
+import 'package:flutter_app/theme/routes.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -11,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: AppRoutes.define(),
       home: OpeningView(),
     );
   }
