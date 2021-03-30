@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "649168611862",
+    "firebase_url": "https://sos2020-walid99.firebaseio.com",
+    "project_id": "sos2020-walid99",
+    "storage_bucket": "sos2020-walid99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649168611862:android:2db32fff607aaea6ca6337",
+        "android_client_info": {
+          "package_name": "com.yt.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649168611862-dep3cd3ljbhr012l5vliem9mjct0de28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARqKxOHgapY4--N5by7jMVJiF8gfwd3t4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649168611862-dep3cd3ljbhr012l5vliem9mjct0de28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
