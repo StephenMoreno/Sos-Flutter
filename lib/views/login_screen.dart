@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class Login extends StatefulWidget{
@@ -14,6 +15,8 @@ class _LoginViewState extends State<Login> {
 
   TextEditingController _emailController;
   TextEditingController _passwordController;
+
+  String _email, _password;
 
   bool isSubmitting = false;
 
@@ -39,7 +42,11 @@ class _LoginViewState extends State<Login> {
         hintStyle: TextStyle(
           color: Colors.blueAccent
         ),
-      ),
+      ),onChanged: (value) {
+          setState(() {
+            _email = value.trim();
+         });
+        },
     );
 
     final passwordField = Column(
@@ -58,6 +65,11 @@ class _LoginViewState extends State<Login> {
             color: Colors.white
         ),
       ),
+        onChanged: (value) {
+          setState(() {
+            _password = value.trim();
+          });
+        },
 
     ),
         Padding(
@@ -106,11 +118,38 @@ class _LoginViewState extends State<Login> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        onPressed: () {
-
+        onPressed: () async {
+          try {
+            UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                email: _email.toString(),
+                password: _password.toString()
+            );
+            Navigator.of(context).pushNamed(AppRoutes.home);
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'user-not-found') {
+                 showDialog(context: context,
+                     builder: (BuildContext context){
+                   return SimpleDialog(
+                     titlePadding: EdgeInsets.fromLTRB(24, 24, 24, 24),
+                     title:
+                     Text('User not found, Please check the email.'),
+                     titleTextStyle:
+                     TextStyle(color: Colors.blueAccent, fontSize: 20.0),
+                   );
+                     });
+            } else if (e.code == 'wrong-password') {
+               showDialog(context: context, builder: (BuildContext context){
+                 return SimpleDialog(
+                   titlePadding: EdgeInsets.fromLTRB(24, 24, 24, 24),
+                   title:
+                   Text('Wrong password provided for that user.'),
+                   titleTextStyle:
+                   TextStyle(color: Colors.blueAccent, fontSize: 20.0),
+                 );
+               });
+            }
+          }
         }
-            // TODO: AlertDialog with error
-
 
       ),
     );

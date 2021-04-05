@@ -16,7 +16,7 @@ class _RegisterViewState extends State<Register> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
 
-  String _email, _password,_username;
+  String _email, _password;
   bool isSubmitting = false;
 
   @override
