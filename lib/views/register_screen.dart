@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/routes.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Register extends StatefulWidget {
@@ -10,18 +9,20 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<Register> {
+
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _usernameController;
   TextEditingController _emailController;
   TextEditingController _passwordController;
 
-  String _email, _password;
+  String _email, _password,_username;
   bool isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
+
 
     final logo = Image.asset(
       "assets/logo.png",
@@ -29,15 +30,7 @@ class _RegisterViewState extends State<Register> {
       width: mq.size.width / 3,
     );
 
-    final usernameField = TextFormField(
-      controller: _usernameController,
-      style: TextStyle(color: Colors.blueAccent),
-      decoration: InputDecoration(
-        hintText: "Jhon Doe",
-        labelText: "username",
-        hintStyle: TextStyle(color: Colors.blueAccent),
-      ),
-    );
+
 
     final emailField = TextFormField(
         controller: _emailController,
@@ -75,7 +68,6 @@ class _RegisterViewState extends State<Register> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          usernameField,
           emailField,
           passwordField,
         ],
@@ -102,6 +94,7 @@ class _RegisterViewState extends State<Register> {
               UserCredential userCredential = await FirebaseAuth.instance
                   .createUserWithEmailAndPassword(
                       email: _email.toString(), password: _password.toString());
+              Navigator.of(context).pushNamed(AppRoutes.home);
             } on FirebaseAuthException catch (e) {
               if (e.code == 'weak-password') {
                 print('The password provided is too weak.');
