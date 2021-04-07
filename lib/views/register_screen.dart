@@ -27,7 +27,7 @@ class _RegisterViewState extends State<Register> {
     final logo = Image.asset(
       "assets/logo.png",
       height: mq.size.height / 2,
-      width: mq.size.width / 3,
+
     );
 
 
@@ -91,10 +91,11 @@ class _RegisterViewState extends State<Register> {
           ),
           onPressed: () async {
             try {
+              print("ok");
               UserCredential userCredential = await FirebaseAuth.instance
                   .createUserWithEmailAndPassword(
                       email: _email.toString(), password: _password.toString());
-              Navigator.of(context).pushNamed(AppRoutes.home);
+              Navigator.of(context).pushNamed(AppRoutes.profileComp);
             } on FirebaseAuthException catch (e) {
               if (e.code == 'weak-password') {
                 print('The password provided is too weak.');

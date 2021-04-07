@@ -18,7 +18,9 @@ class _HomeState extends State<Home> {
       if (user == null) {
         Navigator.of(context).pushNamed(AppRoutes.authLogin);
       } else {
-        print('User is signed in!');
+        User user = FirebaseAuth.instance.currentUser;
+        if (!user.emailVerified) {
+        }
       }
 
     });
@@ -26,5 +28,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Container(color: const Color(0xFFFFE306));
+
   }
 }
