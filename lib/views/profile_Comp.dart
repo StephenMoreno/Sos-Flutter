@@ -161,7 +161,7 @@ class _ProfileCompState extends State<ProfileComp> {
     final acceptText = Column(
       children: <Widget>[
         Text(
-          "By clicking next you are accept ",
+          "By clicking next you are ept ",
           style: Theme.of(context)
               .textTheme
               .subtitle1
