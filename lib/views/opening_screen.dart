@@ -89,7 +89,7 @@ class OpeningView extends StatelessWidget {
 
     return Scaffold(
         body: Padding(
-            padding: EdgeInsets.all(36),
+            padding: EdgeInsets.all(10),
             child: Column(
               children: <Widget>[
                 Padding(

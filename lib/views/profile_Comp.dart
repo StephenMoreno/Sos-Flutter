@@ -132,11 +132,11 @@ class _ProfileCompState extends State<ProfileComp> {
             CollectionReference users = FirebaseFirestore.instance.collection('Users');
             FirebaseAuth auth = FirebaseAuth.instance;
             String uid = auth.currentUser.uid.toString();
-            users.add({
+            users.doc(uid).set({
               'first name':_firstName,
               'last name' :_lastName,
               'date of birth':_dateOfBirth,
-              'uid':uid
+
             });
             User user = FirebaseAuth.instance.currentUser;
             if (!user.emailVerified) {

@@ -4,6 +4,8 @@ import 'package:flutter_app/views/register_screen.dart';
 import 'package:flutter_app/views/home.dart';
 import 'package:flutter_app/views/profile_Comp.dart';
 import 'package:flutter_app/views/F_Password_screen.dart';
+import 'package:flutter_app/views/profile_screen.dart';
+import 'package:flutter_app/views/sos_maroc_screen.dart';
 
 class AppRoutes{
   AppRoutes._();
@@ -13,6 +15,8 @@ class AppRoutes{
   static const String home ='/home';
   static const String profileComp ='/profileComp';
   static const String forgotPassword ='/forgotPassword';
+  static const String profile ='/profile';
+  static const String sosMa ='/sosMa';
 
   static Map<String ,WidgetBuilder> define(){
     return{
@@ -21,7 +25,8 @@ class AppRoutes{
       home:(context)=>Home(),
       profileComp:(context) =>ProfileComp(),
       forgotPassword:(context) =>ForgetPassword(),
-
+      profile:(context) =>ProfileScreen(),
+      sosMa:(context) =>SosScreen(),
     };
   }
 }
