@@ -15,7 +15,7 @@ class ProfileComp extends StatefulWidget {
 class _ProfileCompState extends State<ProfileComp> {
   final _formKey = GlobalKey<FormState>();
 
-  String _firstName, _lastName;
+  String _firstName, _lastName,_chosenValue;
   DateTime _dateOfBirth;
 
   @override
@@ -196,7 +196,7 @@ class _ProfileCompState extends State<ProfileComp> {
                 textDteOfBirth,
                 Padding(padding: EdgeInsets.fromLTRB(0,20,0,20)),
                 dateOfBirth,
-                Padding(padding: EdgeInsets.fromLTRB(0,20,0,20)),
+                Padding(padding: EdgeInsets.fromLTRB(0,20,0,0)),
                 nextButton,
                 Padding(padding: EdgeInsets.fromLTRB(0,20,0,20)),
                 acceptText

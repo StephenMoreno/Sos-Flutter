@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/views/ambulance_screen.dart';
 import 'package:flutter_app/views/login_screen.dart';
+import 'package:flutter_app/views/mechanic_Screen.dart';
 import 'package:flutter_app/views/register_screen.dart';
 import 'package:flutter_app/views/home.dart';
 import 'package:flutter_app/views/profile_Comp.dart';
@@ -17,6 +19,8 @@ class AppRoutes{
   static const String forgotPassword ='/forgotPassword';
   static const String profile ='/profile';
   static const String sosMa ='/sosMa';
+  static const String ambulance ='/ambulance';
+  static const String mechanic ='/mechanic';
 
   static Map<String ,WidgetBuilder> define(){
     return{
@@ -27,6 +31,8 @@ class AppRoutes{
       forgotPassword:(context) =>ForgetPassword(),
       profile:(context) =>ProfileScreen(),
       sosMa:(context) =>SosScreen(),
+      ambulance:(context) =>ambulanceScreen(),
+      mechanic:(context) =>mechanicScreen(),
     };
   }
 }

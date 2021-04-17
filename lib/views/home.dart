@@ -135,7 +135,7 @@ class _HomeState extends State<Home> {
                       ),
                       child: InkWell(
                         onTap: (){
-
+                          Navigator.of(context).pushNamed(AppRoutes.mechanic);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -154,7 +154,7 @@ class _HomeState extends State<Home> {
                       ),
                       child: InkWell(
                         onTap: (){
-
+                           Navigator.of(context).pushNamed(AppRoutes.ambulance);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
