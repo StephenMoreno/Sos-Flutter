@@ -1,46 +1,171 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app/theme/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
+import 'dart:io';
 
-class ProfileScreen extends StatelessWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/theme/Services.dart';
+import 'package:flutter_app/theme/routes.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
+import 'package:path/path.dart';
+
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({Key key}) : super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  File _imageFile;
+
+  final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    Future uploadImageToFirebase(BuildContext context) async {
+      String fileName = basename(_imageFile.path);
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('uploads/$fileName');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      taskSnapshot.ref.getDownloadURL().then(
+        (value) {
+          print("Done: $value");
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          final User user = auth.currentUser;
+          final uid = user.uid;
+          CollectionReference users =
+              FirebaseFirestore.instance.collection('Users');
+          users.doc(uid).update({'imageUrl': value});
+          setState(() {});
+        },
+      );
+    }
+
+    Future pickImage() async {
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        uploadImageToFirebase(context);
+      });
+    }
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser;
-    final uid = user.uid;
-    return Container(
-      child: FutureBuilder<DocumentSnapshot>(
-        future: users.doc(uid).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    //final uid = user.uid;
+    final uid = "36UfVPU7pQWyb82x8CPVxQqxfAt2";
+    final mq = MediaQuery.of(context);
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    String fname, lname, email, imageUrl;
+    imageUrl =
+        "https://toppng.com/uploads/preview/file-svg-profile-icon-vector-11562942678pprjdh47a8.png";
 
-          if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data = snapshot.data.data();
-            return Text("${data['first name']} ${data['last name']}",style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.blueAccent
-            ),);
-          }
-
-          return Text("loading");
-        },
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.blueAccent,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(AppRoutes.home);
+          },
+        ),
+      ),
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: SafeArea(
+                      child: FutureBuilder(
+                          future: users.doc(uid).get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              Map<String, dynamic> data = snapshot.data.data();
+                              fname = data['first name'];
+                              lname = data['last name'];
+                              email = user.email;
+                              imageUrl = data['imageUrl'];
+                            }
+                            return Container(
+                              width: mq.size.width * 0.9,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Center(
+                                      child: GestureDetector(
+                                    onTap: () {
+                                      print("ok");
+                                      pickImage();
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 70,
+                                      backgroundImage: NetworkImage(imageUrl),
+                                    ),
+                                  )),
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          top: mq.size.height * 0.05)),
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: fname,
+                                      hintStyle: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          top: mq.size.height * 0.01)),
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: lname,
+                                      hintStyle: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.only(
+                                          top: mq.size.height * 0.01)),
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: email,
+                                      hintStyle: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          })),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
-
-
-
 }
-
-
-
-

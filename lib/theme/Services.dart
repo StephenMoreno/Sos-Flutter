@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter_app/theme/routes.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 
 CollectionReference users = FirebaseFirestore.instance.collection('Users');
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -26,4 +31,13 @@ getCity() {
       return Text(City);
     },
   );
+}
+
+Connectivity connectivity = Connectivity();
+
+void getConn() async {
+  var connectivityResult = await connectivity.checkConnectivity();
+  if (connectivityResult == ConnectivityResult.mobile) {
+    print("ok");
+  }
 }
