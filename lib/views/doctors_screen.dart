@@ -42,6 +42,7 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                     primary: false,
                     crossAxisCount: 3,
                     children: <Widget>[
+                      //Pediatre Card
                       Card(
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -57,6 +58,52 @@ class _DoctorsScreenState extends State<DoctorsScreen> {
                               Padding(padding: EdgeInsets.only(bottom: 5)),
                               Text(
                                 "PEDIATRICIANS",
+                                style: cardTextStyle,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      //Dentists Card
+
+                      Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoutes.dentists);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(padding: EdgeInsets.only(bottom: 5)),
+                              Text(
+                                "DENTISTS",
+                                style: cardTextStyle,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      //Generalist Card
+
+                      Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoutes.generalist);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(padding: EdgeInsets.only(bottom: 5)),
+                              Text(
+                                "GENERALISTS",
                                 style: cardTextStyle,
                               )
                             ],

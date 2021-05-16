@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/ambulance_screen.dart';
+import 'package:flutter_app/views/doctors/dentist.dart';
+import 'package:flutter_app/views/doctors/generalist.dart';
 import 'package:flutter_app/views/doctors/pediatres.dart';
 import 'package:flutter_app/views/doctors_screen.dart';
 import 'package:flutter_app/views/login_screen.dart';
 import 'package:flutter_app/views/mechanic_Screen.dart';
+import 'package:flutter_app/views/mechanics/bikes.dart';
+import 'package:flutter_app/views/mechanics/cars.dart';
 import 'package:flutter_app/views/register_screen.dart';
 import 'package:flutter_app/views/home.dart';
 import 'package:flutter_app/views/profile_Comp.dart';
@@ -27,6 +31,10 @@ class AppRoutes {
   static const String internet = '/internet';
   static const String doctors = '/doctors';
   static const String pediatres = '/pediatres';
+  static const String dentists = '/dentistes';
+  static const String generalist = '/generalist';
+  static const String cars = '/cars';
+  static const String bikes = '/bikes';
 
   static Map<String, WidgetBuilder> define() {
     return {
@@ -38,10 +46,14 @@ class AppRoutes {
       profile: (context) => ProfileScreen(),
       sosMa: (context) => SosScreen(),
       ambulance: (context) => ambulanceScreen(),
-      mechanic: (context) => mechanicScreen(),
+      mechanic: (context) => MechanicsScreen(),
       internet: (context) => internetError(),
       doctors: (context) => DoctorsScreen(),
-      pediatres: (context) => PediatriciansScreen()
+      pediatres: (context) => PediatriciansScreen(),
+      dentists: (context) => DentistScreen(),
+      generalist: (context) => GeneralistScreen(),
+      cars: (context) => CarsScreen(),
+      bikes: (context) => BikesScreen(),
     };
   }
 }

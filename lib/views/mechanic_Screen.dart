@@ -1,85 +1,100 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/Services.dart';
 import 'package:flutter_app/theme/routes.dart';
 
-// ignore: camel_case_types
-class mechanicScreen extends StatefulWidget {
+class MechanicsScreen extends StatefulWidget {
+  MechanicsScreen({Key key}) : super(key: key);
+
   @override
-  _mechanicScreenState createState() => _mechanicScreenState();
+  _MechanicsScreenState createState() => _MechanicsScreenState();
 }
 
-// ignore: camel_case_types
-class _mechanicScreenState extends State<mechanicScreen> {
+class _MechanicsScreenState extends State<MechanicsScreen> {
   @override
   Widget build(BuildContext context) {
-    var cardTextStyle = TextStyle(fontSize: 17,fontWeight: FontWeight.w500);
+    var cardTextStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Morocco - Mechanics",
-          style: TextStyle(
-            color: Colors.blueAccent,
-          ),),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios,
-            color: Colors.blueAccent,),
-          onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.home);
-          },
-        ),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("mechanicData").snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-          if(!snapshot.hasData){
-            return Center(
-                child: CircularProgressIndicator()
-            );
-          }
-          return ListView(
-            children: snapshot.data.docs.map((document){
-              return Center(
-                child: GestureDetector(
-                  onTap: (){
-                    print(document['name']);
-
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
+      body: Stack(
+        children: <Widget>[
+          SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: <Widget>[
+                    AppBar(
+                      elevation: 0.0,
+                      backgroundColor: Colors.transparent,
+                      leading: IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        color: Colors.blueAccent,
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.home);
+                        },
+                      ),
                     ),
+                    Expanded(
+                      child: GridView.count(
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        primary: false,
+                        crossAxisCount: 3,
+                        children: <Widget>[
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(AppRoutes.cars);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(padding: EdgeInsets.only(bottom: 5)),
+                                  Text(
+                                    "CARS",
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
 
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image(image: NetworkImage(document['profileImgUrl']),height: 120,),
-                        ),
-                        Padding(padding: EdgeInsets.only(bottom: 5,left: 10)),
-                        Container(
-                            margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child:Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text("" +document['name'],style: cardTextStyle,textAlign: TextAlign.left,),
-                                Text("Number :" +document['number'],style: cardTextStyle,),
-                                Text("City :" +document['City'],style: cardTextStyle,),
-                              ],
-                            )
-                        )
-                      ],
-                    ),
 
-                  ),
+                          Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(AppRoutes.bikes);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(padding: EdgeInsets.only(bottom: 5)),
+                                  Text(
+                                    "BIKES",
+                                    style: cardTextStyle,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              );
-            }).toList(),
-          );
-        },
+              ))
+        ],
       ),
     );
   }

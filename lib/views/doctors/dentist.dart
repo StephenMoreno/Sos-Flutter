@@ -2,21 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/routes.dart';
 
-class PediatriciansScreen extends StatefulWidget {
-  PediatriciansScreen({Key key}) : super(key: key);
+class DentistScreen extends StatefulWidget {
+  DentistScreen({Key key}) : super(key: key);
 
   @override
-  _PediatriciansScreenState createState() => _PediatriciansScreenState();
+  _DentistScreenState createState() => _DentistScreenState();
 }
 
-class _PediatriciansScreenState extends State<PediatriciansScreen> {
+class _DentistScreenState extends State<DentistScreen> {
   @override
   Widget build(BuildContext context) {
     var cardTextStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Morocco - Pediatriacians",
+          "Morocco - Dentiste",
           style: TextStyle(
             color: Colors.blueAccent,
           ),
@@ -34,8 +34,7 @@ class _PediatriciansScreenState extends State<PediatriciansScreen> {
         ),
       ),
       body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection("pediatriacians").snapshots(),
+        stream: FirebaseFirestore.instance.collection("dentist").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());

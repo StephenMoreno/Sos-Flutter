@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/theme/routes.dart';
 
-class PediatriciansScreen extends StatefulWidget {
-  PediatriciansScreen({Key key}) : super(key: key);
-
+class GeneralistScreen extends StatefulWidget {
   @override
-  _PediatriciansScreenState createState() => _PediatriciansScreenState();
+  _GeneralistScreenState createState() => _GeneralistScreenState();
 }
 
-class _PediatriciansScreenState extends State<PediatriciansScreen> {
+class _GeneralistScreenState extends State<GeneralistScreen> {
   @override
   Widget build(BuildContext context) {
     var cardTextStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Morocco - Pediatriacians",
+          "Morocco - Generalist",
           style: TextStyle(
             color: Colors.blueAccent,
           ),
@@ -35,7 +34,7 @@ class _PediatriciansScreenState extends State<PediatriciansScreen> {
       ),
       body: StreamBuilder(
         stream:
-            FirebaseFirestore.instance.collection("pediatriacians").snapshots(),
+        FirebaseFirestore.instance.collection("generalist").snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());

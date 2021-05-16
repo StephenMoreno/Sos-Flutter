@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: AppRoutes.define(),
-      home: Home(),
+      home: OpeningView(),
     );
   }
 }
